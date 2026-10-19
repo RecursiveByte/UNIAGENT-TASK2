@@ -1,36 +1,46 @@
+
 name: Upload Software to TIRA
+
 on:
   workflow_dispatch:
     inputs:
       directory:
-        description: 'The directory that contains the submission. Can be . for the root of the repository'
+        description: "The directory that contains the submission"
         required: true
-        default: .
+        default: "."
+
 jobs:
   docker-build:
     runs-on: ubuntu-latest
     timeout-minutes: 45
+
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
+
       - name: Set up Docker Buildx
         uses: docker/setup-buildx-action@v2
+
       - name: Set up Dependencies
         uses: actions/setup-python@v4
         with:
-          python-version: 3.11
-      - name: Install required python packages
+          python-version: "3.11"
+
+      - name: Install required Python packages
         run: |
           python -m pip install --upgrade pip
-          pip3 install tira
+          pip install tira
+
       - name: Build, test, and upload image
         env:
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
-          OPENAI_BASE_URL: https://api.groq.com/openai/v1
-          OPENAI_MODEL: openai/gpt-oss-20b
+          TIRA_CLIENT_TOKEN: ${{ secrets.TIRA_CLIENT_TOKEN }}
         run: |
-          tira-cli login --token ${{ secrets.TIRA_CLIENT_TOKEN }}
+          tira-cli login --token "$TIRA_CLIENT_TOKEN"
           tira-cli verify-installation --task uniagent-2026 --team raiden-exe
-          tira-cli code-submission --path "${{ inputs.directory }}" --task uniagent-2026 --dataset uniagent-2026/business-trip-spot-check-20260907-training --allow-network --forward-environment-variable OPENAI_API_KEY OPENAI_BASE_URL OPENAI_MODEL
+          tira-cli code-submission \
+            --path "${{ inputs.directory }}" \
+            --task uniagent-2026 \
+            --dataset uniagent-2026/business-trip-spot-check-20260907-training

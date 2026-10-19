@@ -1,3 +1,4 @@
+
 from langchain_openai import ChatOpenAI
 
 from .settings import LLMSettings, load_settings
@@ -6,13 +7,17 @@ from .settings import LLMSettings, load_settings
 def build_client(settings: LLMSettings | None = None) -> ChatOpenAI:
     settings = settings or load_settings()
 
-    model_kwargs = {}
-    if settings.openai_reasoning_effort.strip():
-        model_kwargs["reasoning_effort"] = settings.openai_reasoning_effort.strip()
+    client_kwargs = {
+        "base_url": settings.openai_base_url,
+        "api_key": settings.openai_api_key,
+        "model": settings.openai_model,
+    }
 
-    return ChatOpenAI(
-        base_url=settings.openai_base_url,
-        api_key=settings.openai_api_key,
-        model=settings.openai_model,
-        model_kwargs=model_kwargs,
-    )
+    reasoning_effort = settings.openai_reasoning_effort.strip()
+
+    if reasoning_effort:
+        client_kwargs["model_kwargs"] = {
+            "reasoning_effort": reasoning_effort
+        }
+
+    return ChatOpenAI(**client_kwargs)
