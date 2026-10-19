@@ -10,4 +10,4 @@ COPY src/ ./src/
 ENV PYTHONPATH=/app/src
 ENV PYTHONUNBUFFERED=1
 
-ENTRYPOINT ["python", "/app/src/main.py"]
+CMD ["python", "/app/src/main.py"]
