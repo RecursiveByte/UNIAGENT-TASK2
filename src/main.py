@@ -13,11 +13,20 @@ from tools import make_search_policy_tool
 
 def main() -> None:
     parser = argparse.ArgumentParser()
-    parser.add_argument("--input-directory", dest="input", type=Path,
-                        default=os.environ.get("inputDataset"))
-    parser.add_argument("--output-directory", dest="output", type=Path,
-                        default=os.environ.get("outputDir"))
+    parser.add_argument(
+    "-i", "--input-directory",
+    dest="input",
+    type=Path,
+    default=os.environ.get("inputDataset")
+    )
 
+    parser.add_argument(
+        "-o", "--output-directory",
+        dest="output",
+        type=Path,
+        default=os.environ.get("outputDir")
+    )
+    
     args = parser.parse_args()
     if args.input is None or args.output is None:
         parser.error("input and output directory are required")
