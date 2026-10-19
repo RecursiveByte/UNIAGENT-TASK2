@@ -1,0 +1,30 @@
+# Virtual environment
+uniagent_venv/
+venv/
+.venv/
+
+# Python cache
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+
+# Secrets (never commit API keys)
+.env
+.env.*
+
+# Local test data and outputs
+test_cases/
+output/
+*.log.gz
+predictions.jsonl
+
+# Cached indexes (rebuild at runtime)
+*.index
+index_cache/
+
+# Editor / OS files
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db
