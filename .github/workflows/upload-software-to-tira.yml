@@ -33,5 +33,4 @@ jobs:
         run: |
           tira-cli login --token ${{ secrets.TIRA_CLIENT_TOKEN }}
           tira-cli verify-installation --task uniagent-2026 --team raiden-exe
-          tira-cli code-submission --path ${{ inputs.directory }} --task uniagent-2026 --dataset uniagent-2026/business-trip-spot-check-20260907-training
-
+          tira-cli code-submission --path "${{ inputs.directory }}" --task uniagent-2026 --dataset uniagent-2026/business-trip-spot-check-20260907-training --allow-network --forward-environment-variable OPENAI_API_KEY OPENAI_BASE_URL OPENAI_MODEL
